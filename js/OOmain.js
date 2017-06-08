@@ -107,8 +107,22 @@ Jukebox.prototype.build = function(el, options){
 	});
 	audio.addEventListener("ended", function(){
 		that.currentTrack = (that.currentTrack + 1) % that.tracks.length;
-		el.playSong();
+		that.playSong();
 	});
+	window.onkeydown = function(event){
+		if(event.which == 39){
+			that.currentTrack = (that.currentTrack + 1) % that.tracks.length;
+			that.playSong();
+		}
+		else if(event.which == 37){
+			if(that.currentTrack>=1){
+			that.currentTrack = (that.currentTrack - 1);
+			that.playSong();
+			}if(that.currentTrack == 0){
+				that.currentTrack = (that.tracks.length)
+			}
+		}
+    };
 };
 
 var player
@@ -121,6 +135,12 @@ document.addEventListener("DOMContentLoaded", function(){
 	player.addSong(new Song("audio/RuffRydersAnthem.mp3","Ruff Ryder's Anthem","DMX"));
 	player.addSong(new Song("audio/DoYouBelieve.mp3","Do You Believe (In Life After Love)","Cher"));
 	player.addSong(new Song("audio/StacysMom.mp3","Stacy's Mom","Fountains Of Wayne"));
+	player.addSong(new Song("audio/HitEmHigh.mp3","Hit Em High","B-Real, Coolio, Method Man, LL Cool J, and Busta Rhymes"));
+	player.addSong(new Song("audio/Graduation.mp3","Graduation (Friends Forever)", "Vitamin C"));
+	player.addSong(new Song("audio/99Hast.mp3","99 Hast","Nena ft. Rammstein"));
+	player.addSong(new Song("audio/JustAFriend.mp3","Just A Friend","Biz Markie"));
+	player.addSong(new Song("audio/WhoLetTheDogsOut.mp3","Who Let The Dogs Out","Baha Men"));
+	player.addSong(new Song("audio/ByeByeBye.mp3","Bye Bye Bye", "N*Sync"))
 	player.playSong();
 	for(i=0; i<player.tracks.length ; i++){
 		var listItem = document.getElementsByTagName("li")[i];
