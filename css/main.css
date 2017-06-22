@@ -42,6 +42,7 @@ div.wrapper{
 .artist{
 	font-family: 'Bubbler One', sans-serif;
 	margin: 20px;
+	height: 75px;
 	text-shadow: 0 0 20px #ffff00;
 }
 i{
@@ -60,10 +61,10 @@ i{
 
 }
 .noUi-horizontal .noUi-handle {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     left: -17px;
-    top: -10px;
+    top: -7px;
     border-radius: 50%;
 }
 .noUi-handle:before{
@@ -73,11 +74,24 @@ i{
 	display: none;
 }
 .noUi-target{
-	height: 10px;
+	height: 5px;
 	background-color: #ffff00;
 	color: #ffff00;
 	border: none;
 	box-shadow: 0 0 30px #ffff00;
+}
+#listwrap{
+	display: none;
+}
+#tab, #hide{
+	font-size: .5em;
+	font-family: 'Vibur', sans-serif;
+	border: 3px solid #ffff00;
+	box-shadow: 0 0 10px #ffff00;
+	margin: 20px auto 10px;
+	width: 100px;
+	padding: 10px;
+
 }
 #list{
 	font-family: 'Bubbler One',sans-serif;
@@ -86,9 +100,33 @@ i{
 	text-align: left;
 	margin: 20px 20px;
 	padding-left: 20px;
+}
+#list li{
+	color: #3d3d07;
 	text-shadow: none;
 }
 #list li:hover{
+	color: #ffff00;
 	text-shadow: 0 0 15px #ffff00;
 	cursor: pointer;
+}
+#list li:active{
+	color: #ffff00;
+	text-shadow: 0 0 15px #ffff00;
+	cursor: pointer;
+}
+article{
+	color: #ffff00;
+	width:;
+}
+div.albumArt{
+	height: 40px;
+	width: 50px;
+	background-size: cover;
+	display: inline-block;
+}
+div.track{
+	font-size: .5em;
+	display: inline-block;
+	text-align: left;
 }

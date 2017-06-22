@@ -12,7 +12,13 @@ function Jukebox(){
 	this.forward;
 	this.stop;
 	this.listItem;
+
 };
+
+SC.initialize({
+  	client_id: 'fd4e76fc67798bfa742089ed619084a6',
+  	redirect_uri: 'http://example.com/callback'
+});
 
 Jukebox.prototype.addSong = function(song){
 	 if(song instanceof Song){
@@ -53,9 +59,21 @@ Jukebox.prototype.build = function(el, options){
 	<i class="icon-stop-outline" id="stop"></i>
 	<i class="icon-shuffle" id="shuffle"></i>
 	<div id="slider"></div>
-	<div><ol id="list"></ol><div>
+	<div>
+		<p id="tab">Playlist</p>
+		<div id="listwrap">
+			<ol id="list"></ol>
+			<p id = "hide">Hide</p>
+		</div>
+	</div>
+	<div>
+	<form id="search">
+		<input name="search" placeholder="Ex: OK Go"></input>
+		<input type="submit" value="Search"></input>
+	</form>
 	</div>
 	`;
+
 	this.audio = el.querySelector("audio");
 	this.title = el.querySelector(".title");
 	this.artist = el.querySelector(".artist");
@@ -93,6 +111,7 @@ Jukebox.prototype.build = function(el, options){
 	forward.addEventListener("click", function(){
 		that.currentTrack = (that.currentTrack + 1) % that.tracks.length;
 		that.playSong();
+		console.log(that.currentTrack);
 	});
 	stop.addEventListener("click", function(){
 		that.audio.pause();
@@ -123,12 +142,42 @@ Jukebox.prototype.build = function(el, options){
 			}
 		}
     };
+    $("#tab").click(function(){
+    	$("#listwrap").slideDown(1000);
+	});
+    $("#hide").click(function(){
+    	$("#listwrap").slideUp(1000);
+	});
+
+ //    $("#search").submit(function(event){
+	// 	$("#results").html('');
+	// 	event.preventDefault();
+	// 	var term = $("#search input[name=search]").val();
+
+	// 	SC.get('/tracks',{
+	// 		q: term
+	// 	}).then(function(response){
+	// 		console.log(response);
+	// 		response.results.forEach(function(result, index){
+
+	// 			var resultTemplate =`		
+	// 				<article class="result">
+	// 					<div class="albumArt" style="background-image: url("${result.artwork_url}")"></div>
+	// 					<div class="track">${result.title}</div>
+	// 				</article>
+	// 				`;		
+	// 			// console.log(index+1,result)
+	// 			console.log(index+1, result.title);
+	// 			$("#results").append(resultTemplate);	
+	// 		});
+	// 	});
+	// });
 };
 
-var player
-  , that = this;
+var player;
 
 document.addEventListener("DOMContentLoaded", function(){
+
 	player = new Jukebox;
 	player.build(document.getElementById("jukebox"),{name: "Jukebox Hero"});
 	player.addSong(new Song("audio/JukeboxHero.mp3","Jukebox Hero","Foreigner"));
@@ -142,14 +191,48 @@ document.addEventListener("DOMContentLoaded", function(){
 	player.addSong(new Song("audio/WhoLetTheDogsOut.mp3","Who Let The Dogs Out","Baha Men"));
 	player.addSong(new Song("audio/ByeByeBye.mp3","Bye Bye Bye", "N*Sync"))
 	player.playSong();
+	// for(i=0; i<player.tracks.length ; i++){
+	// 	var listItem = document.getElementsByTagName("li")[i];
+	// 	listItem.addEventListener("click", function(){
+	// 		this.currentTrack = this.getAttribute("id");
+	// 		player.audio.src = currentSong.file;
+	// 		player.title.innerText = currentSong.title;
+	// 		player.artist.innerText =  currentSong.artist;
+	// 		player.audio.play();
+	// 	});
+	// };
 	for(i=0; i<player.tracks.length ; i++){
 		var listItem = document.getElementsByTagName("li")[i];
 		listItem.addEventListener("click", function(){
 			currentSong = player.tracks[this.getAttribute("id")];
+			player.currentTrack = parseInt(this.getAttribute("id"));
 			player.audio.src = currentSong.file;
 			player.title.innerText = currentSong.title;
 			player.artist.innerText =  currentSong.artist;
 			player.audio.play();
 		});
 	};
+	$("#search").submit(function(event){
+		$("#results").html('');
+		event.preventDefault();
+		var term = $("#search input[name=search]").val();
+
+		SC.get('/tracks',{
+			q: term
+		}).then(function(response){
+			console.log(response);
+			response.forEach(function(tracks, index){
+
+				var resultTemplate =`		
+					<article class="tracks">
+						<div class="albumArt" style="background-image: url(${tracks.artwork_url});"></div>
+						<div class="track">${tracks.title}</div>
+					</article>
+					`;		
+				// console.log(index+1,result)
+				console.log(index+1, tracks.title);
+				$("#results").append(resultTemplate);	
+			});
+		});
+	});
 });
